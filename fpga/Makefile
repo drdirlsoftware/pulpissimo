@@ -1,9 +1,9 @@
 .DEFAULT_GOAL:=help
 export BENDER
 
-all: genesys2 zcu104 nexys_video nexys zedboard zcu102 zcu106 ## Generates the bitstream for all supported boards board.
+all: genesys2 zcu104 nexys_video nexys zedboard zcu102 zcu106 cmoda7 ## Generates the bitstream for all supported boards board.
 
-clean_all: clean_genesys2 clean_zcu104 clean_nexys_video clean_nexys clean_zedboard clean_zcu102 ## Removes synthesis output and bitstreams for all boards.
+clean_all: clean_genesys2 clean_zcu104 clean_nexys_video clean_nexys clean_zedboard clean_zcu102 clean_cmoda7 ## Removes synthesis output and bitstreams for all boards.
 
 genesys2: ## Generates the bistream for the genesys2 board
 	$(MAKE) -C pulpissimo-genesys2 all
@@ -92,7 +92,17 @@ clean_zcu102: ## Removes all bitstreams, *.log files and vivado related files (r
 	$(MAKE) -C pulpissimo-zcu102 clean
 	rm -f pulpissimo_zcu102.bit
 	rm -f pulpissimo_zcu102.bin
+	
+cmoda7: ## Generates the bistream for the cmoda7 board
+	$(MAKE) -C pulpissimo-cmoda7 all
+	cp pulpissimo-cmoda7/pulpissimo-cmoda7.runs/impl_1/xilinx_pulpissimo.bit pulpissimo_cmoda7.bit
+	cp pulpissimo-cmoda7/pulpissimo-cmoda7.runs/impl_1/xilinx_pulpissimo.bin pulpissimo_cmoda7.bin
+	@echo "Bitstream generation for cmoda7 board finished. The bitstream Configuration Memory File was copied to ./pulpissimo_cmoda7.bit and ./pulpissimo_cmoda7.bin"
 
+clean_cmoda7: ## Removes all bitstreams, *.log files and vivado related files (rm -rf vivado*) for the cmoda7 board.
+	$(MAKE) -C pulpissimo-cmoda7 clean
+	rm -f pulpissimo_cmoda7.bit
+	rm -f pulpissimo_cmoda7.bin
 
 help: ## Show this help message
 	@echo "PULPissimo on FPGA"
